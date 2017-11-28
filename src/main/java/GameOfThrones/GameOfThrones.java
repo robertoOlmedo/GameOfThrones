@@ -14,13 +14,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class GameOfThrones {
-
+private LinkedTree<FamilyMember> arbolGenealogico = new LinkedTree<>();
     public void loadFile(String pathToFile) throws IOException {
-        LinkedTree<Personaje> arbolGenealogico = new LinkedTree<>();
-        Personaje rootTree = new Personaje();
+        
+        FamilyMember rootTree = new FamilyMember();
         arbolGenealogico.addRoot(rootTree);
-        Position<Personaje> nodoPadre = null;
-        Map<String, Personaje> mapConTodosLosPersonajes = new HashMap<>();
+        Position<FamilyMember> nodoPadre = null;
+        Map<String, FamilyMember> mapConTodosLosPersonajes = new HashMap<>();
         File file = new File(pathToFile);
         LineIterator it = FileUtils.lineIterator(file, "UTF-8");
         try {
@@ -44,7 +44,8 @@ public class GameOfThrones {
                 }
                 if ((line.length() > 9) && (line.length() < 80)) {
                     String[] splited = NormalizaPersonaje(line);
-                    Personaje p = new Personaje(splited[0], splited[1], splited[2], splited[3], splited[4]);
+                    FamilyMember
+                            p = new FamilyMember(splited[0], splited[1], splited[2], splited[3], splited[4]);
                     mapConTodosLosPersonajes.put(p.getId(), p);
                 }
             }
@@ -55,12 +56,39 @@ public class GameOfThrones {
 
 
     }
+    public LinkedTree<FamilyMember> getFamily(String surname){
+    
+        Iterator<Position<FamilyMember>> ite = new BFSIterator<>(arbolGenealogico, arbolGenealogico.root());
+        FamilyMember rootDelReturnTree=null;
+        boolean encontradoPrimerMiembroFamilia= false;
+        Position<FamilyMember> node = null;
+        while (ite.hasNext() && !encontradoPrimerMiembroFamilia) {
+           node = ite.next();
+            if (node.getElement().getApellido().equals(surname)) {
+                encontradoPrimerMiembroFamilia=true;
+                rootDelReturnTree = node.getElement();
+            }
+//            arbolGenealogico.children(node);
+        }
+        arbolGenealogico.children(node);
+        //hacer un for sobre los children y meterlos en una pila o algo parcedio
+        //y sacarlo y meterlo en el arbol
+        LinkedTree<FamilyMember> returnTree= new LinkedTree<FamilyMember>();
+        Position <FamilyMember> a= returnTree.addRoot(new FamilyMember());
+        returnTree.add(rootDelReturnTree,a);
+        System.out.println(returnTree.toString());
+        return returnTree;
+    
+    
+    
+        
+    }
 
-    private Position<Personaje> getNodePadre(LinkedTree<Personaje> arbolGenealogico, String idPadre) {
-        Position<Personaje> nodoPadreReturn = null;
-        Iterator<Position<Personaje>> ite = new BFSIterator<>(arbolGenealogico, arbolGenealogico.root());
+    private Position<FamilyMember> getNodePadre(LinkedTree<FamilyMember> arbolGenealogico, String idPadre) {
+        Position<FamilyMember> nodoPadreReturn = null;
+        Iterator<Position<FamilyMember>> ite = new BFSIterator<>(arbolGenealogico, arbolGenealogico.root());
         while (ite.hasNext()) {
-            Position<Personaje> node = ite.next();
+            Position<FamilyMember> node = ite.next();
             if (node.getElement().getId().equals(idPadre)) {
                 nodoPadreReturn = node;
 
@@ -69,9 +97,9 @@ public class GameOfThrones {
         return nodoPadreReturn;
     }
 
-    private void rellenarArbol(LinkedTree<Personaje> arbolGenealogico, Position<Personaje> parent, String children, Map<String, Personaje> mapConTodosLosPersonajes) {
+    private void rellenarArbol(LinkedTree<FamilyMember> arbolGenealogico, Position<FamilyMember> parent, String children, Map<String, FamilyMember> mapConTodosLosPersonajes) {
 
-        Personaje hijo = mapConTodosLosPersonajes.get(StringUtils.deleteWhitespace(children));
+        FamilyMember hijo = mapConTodosLosPersonajes.get(StringUtils.deleteWhitespace(children));
 
         arbolGenealogico.add(hijo, parent);
 

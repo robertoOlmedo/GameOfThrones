@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 <dependencies>
     <dependency>
-        <groupId>com.urjc.eda</groupId>
-        <artifactId>tree</artifactId>
+        <groupId>org.urjc.eda</groupId>
+        <artifactId>tree-master</artifactId>
         <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>

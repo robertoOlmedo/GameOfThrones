@@ -2,14 +2,14 @@ package GameOfThrones;
 
 import material.tree.Position;
 
-public class Personaje  {
+public class FamilyMember {
     private String id;
     private String nombre;
     private String apellido;
     private String genero;
     private String edad;
 
-    public Personaje(){
+    public FamilyMember(){
         this.id= "#";
         this.nombre= "Root";
         this.apellido="Slash";
@@ -20,7 +20,7 @@ public class Personaje  {
 
     }
 
-    public Personaje(String id, String nombre, String apellido, String genero, String edad) {
+    public FamilyMember(String id, String nombre, String apellido, String genero, String edad) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -30,7 +30,7 @@ public class Personaje  {
 
     @Override
     public String toString() {
-        return "GameOfThrones.Personaje{" + "id='" + id + '\'' + ", nombre='" + nombre + '\'' + ", apellido='" + apellido + '\'' +
+        return "GameOfThrones.FamilyMember{" + "id='" + id + '\'' + ", nombre='" + nombre + '\'' + ", apellido='" + apellido + '\'' +
                 ", genero='" + genero + '\'' + ", edad='" + edad + '\'' + '}';
     }
 
